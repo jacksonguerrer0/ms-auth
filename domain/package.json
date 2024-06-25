@@ -1,0 +1,20 @@
+{
+  "name": "domain",
+  "version": "1.0.0",
+  "engines": {
+    "node": "~20.14.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jacksonguerrer0",
+  "license": "UNLICENSED",
+  "description": "",
+  "dependencies": {
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "typescript": "^5.1.3"
+  }
+}

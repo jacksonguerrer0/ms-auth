@@ -1,0 +1,9 @@
+include .env
+
+setup: install-awslocal docker-compose-run
+
+install-awslocal:
+	pip3 install awscli-local
+
+docker-compose-run:
+	docker-compose up -d
