@@ -1,9 +1,7 @@
-import { IHealthRepository } from "domain/src/model/health/health.repository";
-
 export class GetHealthUsecase {
-  constructor(private healthRepository: IHealthRepository) {}
+  constructor() {}
 
   async apply(): Promise<boolean> {
-    return this.healthRepository.check();
+    return true;
   }
 }
