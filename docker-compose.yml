@@ -6,6 +6,6 @@ services:
     ports:
       - '4566:4566'
     environment:
-      - SERVICES=lambda,sns
+      - SERVICES=cognito,lambda
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'

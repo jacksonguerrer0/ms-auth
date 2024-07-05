@@ -8,6 +8,12 @@ class EnvVariables {
 
   @IsString()
   AWS_REGION!: string;
+
+  @IsString()
+  AWS_COGNITO_CLIENT_ID!: string;
+
+  @IsString()
+  AWS_COGNITO_ENDPOINT_LOCAL!: string;
 }
 
 export function validateEnvVariables(config: Record<string, unknown>) {
