@@ -28,7 +28,7 @@ import {
 import { CognitoClient } from './client';
 
 @Injectable()
-export class CognitoService {
+export class UsersCognitoService {
   private readonly cognitoClient: CognitoIdentityProviderClient;
   private readonly clientId: string;
 
@@ -107,7 +107,7 @@ export class CognitoService {
       throw new InternalServerErrorException('Can not confirm signup');
     }
   }
-
+  // TODO: Use later :)
   async resendConfirmationCodeCommand(data: TResendConfirmationCodeCommand) {
     try {
       const { username } = data;

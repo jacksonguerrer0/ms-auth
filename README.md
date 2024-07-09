@@ -7,7 +7,7 @@
 
 ## Description
 
-This is MS-AUTH contain logic for two lambda: lambda-login & lambda-signup. It is responsible for all flow of authentication.
+This is MS-AUTH. It is responsible for all flow of authentication.
 
 ## Installation
 

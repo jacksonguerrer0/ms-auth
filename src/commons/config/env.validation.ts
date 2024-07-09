@@ -14,6 +14,12 @@ class EnvVariables {
 
   @IsString()
   AWS_COGNITO_ENDPOINT_LOCAL!: string;
+
+  @IsString()
+  AWS_DYNAMO_ENDPOINT_URL!: string;
+
+  @IsString()
+  AWS_DYNAMO_USERS_TABLE!: string;
 }
 
 export function validateEnvVariables(config: Record<string, unknown>) {
