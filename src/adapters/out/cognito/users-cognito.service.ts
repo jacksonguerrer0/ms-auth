@@ -65,7 +65,7 @@ export class UsersCognitoService {
 
       await this.cognitoClient.send(new SignUpCommand(params));
     } catch (error) {
-      console.error(`signUpCommand - ${error}`);
+      console.error('signUpCommand - error:', error);
       throw new InternalServerErrorException('Not is posible create this user');
     }
   }

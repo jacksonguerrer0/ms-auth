@@ -1,9 +1,11 @@
+import { ScanCommand } from '@aws-sdk/client-dynamodb';
 import {
   DynamoDBDocumentClient,
   PutCommand,
   PutCommandInput,
   QueryCommand,
   QueryCommandInput,
+  ScanCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import {
   Inject,
@@ -34,7 +36,7 @@ export class UsersDynamoService {
       };
       return await this.dynamoDBDocumentClient.send(new PutCommand(params));
     } catch (error) {
-      console.log('Error creating user in dynamoDB');
+      console.error('Error creating user in dynamoDB', error);
       throw new InternalServerErrorException('Error');
     }
   }
@@ -57,6 +59,20 @@ export class UsersDynamoService {
       return await this.dynamoDBDocumentClient.send(new QueryCommand(params));
     } catch (error) {
       console.log('Error getting user by PK and SK in dynamoDB');
+      throw new InternalServerErrorException('Error');
+    }
+  }
+
+  async getAllWithLimit(Limit: number) {
+    try {
+      const params: ScanCommandInput = {
+        TableName: AWS_DYNAMO_USERS_TABLE,
+        Limit,
+      };
+
+      return await this.dynamoDBDocumentClient.send(new ScanCommand(params));
+    } catch (error) {
+      console.error('Error getting all users in dynamoDB', error);
       throw new InternalServerErrorException('Error');
     }
   }
