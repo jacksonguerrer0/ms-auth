@@ -10,6 +10,9 @@ class EnvVariables {
   AWS_REGION!: string;
 
   @IsString()
+  AWS_COGNITO_USER_POOL_ID!: string;
+
+  @IsString()
   AWS_COGNITO_CLIENT_ID!: string;
 
   @IsString()

@@ -1,21 +1,15 @@
-import { Module } from "@nestjs/common";
-import { AuthController } from "src/adapters/in/http/auth/auth.controller";
-import { UsersCognitoService } from "src/adapters/out/cognito/users-cognito.service";
-import { dynamoDBDocumentClient } from "src/adapters/out/dynamo/client";
-import { UsersDynamoService } from "src/adapters/out/dynamo/users-dynamo.service";
+import { Module } from '@nestjs/common';
+import { GetUserOfAuthProvider } from 'domain/src/services/auth/get-user-of-auth-provider.service';
+import { SaveUserUsecase } from 'domain/src/usecase/auth/save-user.usecase';
+import { AuthController } from 'src/adapters/in/http/auth/auth.controller';
+import { HandlerSaveUser } from 'src/handler/auth/save-user.handler';
 
 @Module({
-  controllers: [AuthController],
   providers: [
-    UsersCognitoService,
-    UsersDynamoService,
-    {
-      provide: UsersDynamoService,
-      useFactory(dynamoDBDocumentClient) {
-        return new UsersDynamoService(dynamoDBDocumentClient);
-      },
-      inject: ['dynamoClient'],
-    },
+    HandlerSaveUser,
+    SaveUserUsecase,
+    GetUserOfAuthProvider,
   ],
+  controllers: [AuthController],
 })
 export class AuthModule {}

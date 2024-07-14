@@ -8,6 +8,8 @@ import {
   ConfirmSignUpCommandInput,
   ForgotPasswordCommand,
   ForgotPasswordCommandInput,
+  GetUserCommand,
+  GetUserCommandInput,
   InitiateAuthCommand,
   InitiateAuthCommandInput,
   ResendConfirmationCodeCommand,
@@ -24,11 +26,12 @@ import {
   TLoginUserCommand,
   TResendConfirmationCodeCommand,
   TSignupUserCommand,
-} from 'domain/src/model/users/users.type';
+} from 'domain/src/model/auth/command/auth-provider.command';
+import { IAuthProviderService } from 'domain/src/model/auth/interfaces/auth-provider.service';
 import { CognitoClient } from './client';
 
 @Injectable()
-export class UsersCognitoService {
+export class UsersCognitoService implements IAuthProviderService {
   private readonly cognitoClient: CognitoIdentityProviderClient;
   private readonly clientId: string;
 
@@ -39,34 +42,16 @@ export class UsersCognitoService {
     this.clientId = process.env.AWS_COGNITO_CLIENT_ID;
   }
 
-  async signUpCommand(data: TSignupUserCommand) {
+  async getUserCommand(accessToken: string) {
     try {
-      const { username, email, password } = data;
-
-      const params: SignUpCommandInput = {
-        ClientId: this.clientId,
-        Username: username,
-        Password: password,
-        UserAttributes: [
-          {
-            Name: 'email',
-            Value: email,
-          },
-          {
-            Name: 'email_verified',
-            Value: 'true',
-          },
-          {
-            Name: 'username',
-            Value: username,
-          },
-        ],
+      const params: GetUserCommandInput = {
+        AccessToken: accessToken,
       };
 
-      await this.cognitoClient.send(new SignUpCommand(params));
+      return await this.cognitoClient.send(new GetUserCommand({ ...params }));
     } catch (error) {
-      console.error('signUpCommand - error:', error);
-      throw new InternalServerErrorException('Not is posible create this user');
+      console.error(`signInCommand - ${error}`);
+      throw new InternalServerErrorException('Error getting user');
     }
   }
 
@@ -107,6 +92,39 @@ export class UsersCognitoService {
       throw new InternalServerErrorException('Can not confirm signup');
     }
   }
+
+  // SIGNUP will be used to create a new user as dependent of the principal user
+  async signUpCommand(data: TSignupUserCommand) {
+    try {
+      const { username, email, password } = data;
+
+      const params: SignUpCommandInput = {
+        ClientId: this.clientId,
+        Username: username,
+        Password: password,
+        UserAttributes: [
+          {
+            Name: 'email',
+            Value: email,
+          },
+          {
+            Name: 'email_verified',
+            Value: 'true',
+          },
+          {
+            Name: 'preferred_username',
+            Value: username,
+          },
+        ],
+      };
+
+      await this.cognitoClient.send(new SignUpCommand(params));
+    } catch (error) {
+      console.error('signUpCommand - error:', error);
+      throw new InternalServerErrorException('Not is posible create this user');
+    }
+  }
+
   // TODO: Use later :)
   async resendConfirmationCodeCommand(data: TResendConfirmationCodeCommand) {
     try {

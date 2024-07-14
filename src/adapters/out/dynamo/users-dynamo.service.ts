@@ -12,7 +12,7 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { UsersEntity } from 'domain/src/model/users/users.entity';
+import { UsersEntity } from 'domain/src/model/auth/entities/users.entity';
 import { getCurrentDate } from 'src/commons/utils/time.utils';
 
 const { AWS_DYNAMO_USERS_TABLE } = process.env;
